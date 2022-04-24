@@ -10,7 +10,7 @@ from .util import create_contract
 import sys
 
 sys.path.append("..")  # Adds higher directory to python modules path.
-from pool.base_pool import BasePool
+from pool.balancer_pool import BalancerPool
 
 
 def creat_vault_contract(w3):
@@ -18,7 +18,7 @@ def creat_vault_contract(w3):
 
 
 async def get_pool(beethoven_vault_contract, pool_id):
-    (pool_addr, pool_type), (tokens, balances, lastChangeBlock,) = await asyncio.gather(
+    (pool_addr, pool_type), (tokens, balances, lastChangeBlock) = await asyncio.gather(
         beethoven_vault_contract.functions.getPool(pool_id).call(),
         beethoven_vault_contract.functions.getPoolTokens(pool_id).call(),
     )
@@ -40,7 +40,7 @@ async def get_pool_weight_fee(w3_async, beethoven_vault_contract, pool_id):
         weighted_pool_contract.functions.getNormalizedWeights().call(),
         weighted_pool_contract.functions.getSwapFeePercentage().call(),
     )
-    return pool_addr, pool_type, tokens, balances, weights, swapFeePercentage
+    return pool_id, pool_addr, pool_type, tokens, balances, weights, swapFeePercentage
 
 
 async def get_pool_dict_async(w3_async, beethoven_pools_j, beethoven_vault_contract):
@@ -58,10 +58,20 @@ async def get_pool_dict_async(w3_async, beethoven_pools_j, beethoven_vault_contr
 
     for task in tasks0:
 
-        pool_addr, pool_type, tokens, balances, weights, swapFeePercentage = await task
+        (
+            pool_id,
+            pool_addr,
+            pool_type,
+            tokens,
+            balances,
+            weights,
+            swapFeePercentage,
+        ) = await task
 
         fee = 1 - float(Web3.fromWei(swapFeePercentage, "ether"))
-        pool_obj = BasePool(pool_addr, tokens, weights, fee)
+        pool_obj = BalancerPool(
+            pool_addr, tokens, weights, fee, pool_id, beethoven_vault_contract
+        )
         pool_addr_dict[pool_addr] = pool_obj
     return pool_addr_dict
 

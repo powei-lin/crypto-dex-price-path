@@ -25,3 +25,8 @@ def load_json(file_path):
 
 def create_contract(w3, address, abi):
     return w3.eth.contract(address=address, abi=abi)
+
+
+async def update_pool_dict(pool_dict: dict):
+    for pool in pool_dict.values():
+        await pool.update_async()

@@ -5,3 +5,6 @@ class BasePool:
         self.tokens = _tokens
         self.weight = _weights
         self.fee = _fee
+
+    async def update_async(self):
+        self.fee += 1
