@@ -1,6 +1,7 @@
 from itertools import combinations
 import asyncio
 from regex import P
+from web3 import Web3
 from web3constant.abi.UniswapV2 import UNISWAP_V2_PAIR_ABI
 
 import sys
@@ -24,21 +25,31 @@ async def get_pool_addr(dex_obj, token0, token1):
 
 
 async def get_pool_from_dex(w3_async, dex_obj, token0, token1):
+
+    # check pool exist
     pool_addr = await get_pool_addr(dex_obj, token0, token1)
     if not pool_addr:
         return None
+
+    # check min reserves
+    pair_contract = w3_async.eth.contract(address=pool_addr, abi=UNISWAP_V2_PAIR_ABI)
+    min_reserve = Web3.toWei(1, "ether")
+    reserves = await pair_contract.functions.getReserves().call()
+    if reserves[0] + reserves[1] < min_reserve:
+        return None
+
     tk_list = []
     if token0.lower() < token1.lower():
         tk_list = [token0, token1]
     else:
         tk_list = [token1, token0]
     fee = dex_obj.fee_10000() / 10000
-    pair_contract = w3_async.eth.contract(address=pool_addr, abi=UNISWAP_V2_PAIR_ABI)
 
-    return UniPool(pool_addr, tk_list, [1, 1], fee, pair_contract)
+    return UniPool(pool_addr, tk_list, [int(5e17), int(5e17)], fee, pair_contract)
 
 
 async def pair_from_availible_tokens(w3_async, availible_tokens: set):
+    print("Start creating Uni pools")
     token_combination_list = list(combinations(availible_tokens, 2))
     dex_objs = all_dexes_objs(w3_async)
     tasks = []

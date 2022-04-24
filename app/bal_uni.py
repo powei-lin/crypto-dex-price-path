@@ -1,5 +1,6 @@
 import sys
 import asyncio
+from time import perf_counter
 from web3 import Web3
 from web3constant.Fantom.Url import FTM_RPC
 from web3constant.Fantom.ERC20_address import WFTM
@@ -30,11 +31,16 @@ async def main():
     )
     combined_dict = dict(beets_pool_dict, **uni_pair_dict)
     await util.update_pool_dict(combined_dict)
-    for v in combined_dict.values():
-        print(v.fee)
-    return
+    # for v in combined_dict.values():
+    #     print(v.token_balances)
+    #     print(v.token_weights)
+    #     print()
+    # return
     while True:
-        print(await w3_async.eth.get_block_number())
+        # print(await w3_async.eth.get_block_number())
+        s = perf_counter()
+        await util.update_pool_dict(combined_dict)
+        print(perf_counter() - s)
     optimizer.build_path_map(combined_dict, start_token=WFTM)
     #
 

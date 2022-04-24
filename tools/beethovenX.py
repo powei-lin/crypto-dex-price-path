@@ -44,6 +44,7 @@ async def get_pool_weight_fee(w3_async, beethoven_vault_contract, pool_id):
 
 
 async def get_pool_dict_async(w3_async, beethoven_pools_j, beethoven_vault_contract):
+    print("Start creating Beet pools")
     pool_addr_dict = {}
 
     tasks0 = []

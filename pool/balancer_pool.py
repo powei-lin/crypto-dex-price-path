@@ -21,3 +21,9 @@ class BalancerPool(BasePool):
             balances,
             lastChangeBlock,
         ) = await self.vault_contract.functions.getPoolTokens(self.pool_id).call()
+        is_update = False
+        for t, b in zip(tokens, balances):
+            if self.token_balances[t] != b:
+                self.token_balances[t] = b
+                is_update = True
+        return is_update
