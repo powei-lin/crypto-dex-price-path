@@ -64,3 +64,11 @@ async def get_pool_dict_async(w3_async, beethoven_pools_j, beethoven_vault_contr
         pool_obj = BasePool(pool_addr, tokens, weights, fee)
         pool_addr_dict[pool_addr] = pool_obj
     return pool_addr_dict
+
+
+def tokens_from_beets_pool_dict(pool_addr_dict: dict):
+    tokens = set()
+    for pool_obj in pool_addr_dict.values():
+        for token in pool_obj.tokens:
+            tokens.add(token)
+    return tokens
