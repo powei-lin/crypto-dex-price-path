@@ -17,6 +17,8 @@ async def main():
         print("Connection Fail")
         return
 
+    token_name_dict = util.load_json("data/top_tokens_ftm.json")
+
     # creat beethovenX pools
     beethoven_pools_j = util.load_json("data/beethovenX_pool.json")
     beethoven_vault_contract = beethovenX.creat_vault_contract(w3_async)
@@ -30,18 +32,20 @@ async def main():
         w3_async, available_tokens
     )
     combined_dict = dict(beets_pool_dict, **uni_pair_dict)
-    await util.update_pool_dict(combined_dict)
-    # for v in combined_dict.values():
-    #     print(v.token_balances)
-    #     print(v.token_weights)
-    #     print()
+    path_map = optimizer.build_path_map(combined_dict, start_token=WFTM, max_hop=3)
+    print(len(path_map))
     # return
+    for path in path_map:
+        print(util.path_to_string(path, combined_dict, token_name_dict))
+    await util.update_pool_dict(combined_dict)
+    # print(path_map[0].token_balances)
+    return
+
     while True:
         # print(await w3_async.eth.get_block_number())
         s = perf_counter()
         await util.update_pool_dict(combined_dict)
         print(perf_counter() - s)
-    optimizer.build_path_map(combined_dict, start_token=WFTM)
     #
 
 

@@ -39,3 +39,11 @@ async def update_pool_dict(pool_dict: dict, show_debug=True):
         total += 1
     if show_debug:
         print(count, total)
+
+
+def path_to_string(path, pool_dict: dict, token_name_dict: dict):
+    st = ""
+    for tk, pool_addr in path:
+        st += token_name_dict[tk] + " -> " + pool_addr[:5] + " -> "
+    st += token_name_dict[path[0][0]]
+    return st
