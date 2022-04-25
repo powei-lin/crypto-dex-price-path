@@ -9,3 +9,9 @@ class BasePool:
 
     async def update_async(self):
         self.fee += 1
+
+    def slope(self, from_tk, to_tk):
+        b_0, b_1 = self.token_balances[from_tk], self.token_balances[to_tk]
+        w_0, w_1 = self.token_weights[from_tk], self.token_weights[to_tk]
+        f_0 = self.fee
+        return b_1 * f_0 * w_0 / (w_1 * b_0)

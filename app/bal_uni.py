@@ -32,20 +32,24 @@ async def main():
         w3_async, available_tokens
     )
     combined_dict = dict(beets_pool_dict, **uni_pair_dict)
-    path_map = optimizer.build_path_map(combined_dict, start_token=WFTM, max_hop=3)
-    print(len(path_map))
+    path_list = optimizer.build_path_list(combined_dict, start_token=WFTM, max_hop=2)
+    print(len(path_list))
     # return
-    for path in path_map:
-        print(util.path_to_string(path, combined_dict, token_name_dict))
     await util.update_pool_dict(combined_dict)
-    # print(path_map[0].token_balances)
-    return
 
+    slope, path = optimizer.find_arb_path(path_list, combined_dict)
+    print(slope)
+    optimizer.calculate_max_profit(path)
+    print(util.path_to_string(path, combined_dict, token_name_dict))
+    return
     while True:
         # print(await w3_async.eth.get_block_number())
         s = perf_counter()
-        await util.update_pool_dict(combined_dict)
+        block_num, _ = await asyncio.gather(
+            w3_async.eth.get_block_number(), util.update_pool_dict(combined_dict, False)
+        )
         print(perf_counter() - s)
+        print(block_num)
     #
 
 

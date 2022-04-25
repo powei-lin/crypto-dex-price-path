@@ -43,7 +43,13 @@ async def update_pool_dict(pool_dict: dict, show_debug=True):
 
 def path_to_string(path, pool_dict: dict, token_name_dict: dict):
     st = ""
-    for tk, pool_addr in path:
+    for d in path:
+        tk, pool_addr = d["token_in"], d["pool_addr"]
         st += token_name_dict[tk] + " -> " + pool_addr[:5] + " -> "
-    st += token_name_dict[path[0][0]]
+    st += token_name_dict[path[0]["token_in"]]
     return st
+
+
+def print_path_list(path_list, combined_dict, token_name_dict):
+    for path in path_list:
+        print(path_to_string(path, combined_dict, token_name_dict))
