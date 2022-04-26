@@ -39,7 +39,7 @@ async def main():
 
     slope, path = optimizer.find_arb_path(path_list, combined_dict)
     print(slope)
-    optimizer.calculate_max_profit(path)
+    optimizer.calculate_max_profit(path, combined_dict)
     print(util.path_to_string(path, combined_dict, token_name_dict))
     return
     while True:
