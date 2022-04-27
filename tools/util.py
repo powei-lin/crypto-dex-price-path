@@ -1,4 +1,6 @@
 import json
+import requests
+from bs4 import BeautifulSoup
 import asyncio
 from web3 import Web3, AsyncHTTPProvider
 from web3.eth import AsyncEth
@@ -53,3 +55,13 @@ def path_to_string(path, pool_dict: dict, token_name_dict: dict):
 def print_path_list(path_list, combined_dict, token_name_dict):
     for path in path_list:
         print(path_to_string(path, combined_dict, token_name_dict))
+
+
+def get_token_name(ftm_scan_token_url, token_address):
+    res = requests.get(ftm_scan_token_url + token_address)
+    soup = BeautifulSoup(res.text, "lxml")
+    res = soup.find("span", {"class": "text-secondary small"})
+    token_name = "NotFound"
+    if res:
+        token_name = res.getText()
+    return token_name

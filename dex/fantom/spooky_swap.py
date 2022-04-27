@@ -1,4 +1,4 @@
-from .uniswap_v2 import UniSwap_v2
+from ..uniswap_v2 import UniSwap_v2
 
 
 class SpookySwap(UniSwap_v2):

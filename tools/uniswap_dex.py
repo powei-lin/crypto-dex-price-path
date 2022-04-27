@@ -1,6 +1,5 @@
 from itertools import combinations
 import asyncio
-from regex import P
 from web3 import Web3
 from web3constant.abi.UniswapV2 import UNISWAP_V2_PAIR_ABI
 
@@ -8,13 +7,13 @@ import sys
 
 sys.path.append("..")  # Adds higher directory to python modules path.
 from pool.uni_pool import UniPool
-import dex
+import dex.fantom
 
 
 def all_dexes_objs(w3):
-    dex_names = dir(dex)
+    dex_names = dir(dex.fantom)
     dex_names = dex_names[: dex_names.index("__builtins__")]
-    return [getattr(dex, dex_name)(w3) for dex_name in dex_names]
+    return [getattr(dex.fantom, dex_name)(w3) for dex_name in dex_names]
 
 
 async def get_pool_addr(dex_obj, token0, token1):

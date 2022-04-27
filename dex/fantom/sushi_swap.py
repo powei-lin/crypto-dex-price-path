@@ -1,4 +1,4 @@
-from .uniswap_v2 import UniSwap_v2
+from ..uniswap_v2 import UniSwap_v2
 from web3constant.Fantom.Dex import (
     SUSHI_SWAP_FACTORY_ADDRESS,
     SUSHI_SWAP_ROUTER_ADDRESS,

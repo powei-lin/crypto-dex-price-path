@@ -70,19 +70,6 @@ class UniSwap_v2:
             token0_address, token1_address
         ).call()
 
-    async def getReservesAsync(self, token0_address, token1_address):
-        pair_address = await asyncio.create_task(
-            self.getPairAsync(token0_address, token1_address)
-        )
-        if pair_address == "0x0000000000000000000000000000000000000000":
-            return 0, 0
-        pair_contract = create_contract(self.network, pair_address, UNISWAP_V2_PAIR_ABI)
-        token0 = await pair_contract.functions.token0().call()
-        reserves = await pair_contract.functions.getReserves().call()
-        if token0 != token0_address:
-            return reserves[1], reserves[0]
-        return reserves[0], reserves[1]
-
     async def get_amount_async(self, token0_Wei, token0_address, token1_address):
         try:
             return (
