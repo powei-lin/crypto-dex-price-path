@@ -18,3 +18,17 @@ class UniPool(BasePool):
             self.token_balances[self.t1] = reserves[1]
             is_update = True
         return is_update
+
+    def amount_out(self, amount_in: int, token_in) -> int:
+        # t0 -> t1
+        t0, t1 = "", ""
+        if token_in == self.t0:
+            t0, t1 = self.t0, self.t1
+        elif token_in == self.t1:
+            t0, t1 = self.t1, self.t0
+        else:
+            raise RuntimeError
+        b0 = self.token_balances[t0]
+        b1 = self.token_balances[t1]
+        fee = self.fee
+        return int(b1 * fee * amount_in / (b0 + fee * amount_in))

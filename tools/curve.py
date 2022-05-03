@@ -10,6 +10,12 @@ CURVE_TRICRYPTO_ADDRESS = "0x3a1659Ddcf2339Be3aeA159cA010979FB49155FF"
 CURVE_MATH_ADDRESS = "0x939986418baFb4E2d82A76E320767Ff02d250203"
 CURVE_VIEW_ADDRESS = "0x4643A6600eae4851677A1f16d5e40Ef868c71717"
 
+CURVE_TOKENS = [
+    "0x049d68029688eAbF473097a2fC38ef61633A3C7A",
+    "0x321162Cd933E2Be498Cd2267a90534A804051b11",
+    "0x74b23882a30290451A17c44f4F05243b6b58C76d",
+]
+
 
 def creat_tricrypto_contract(w3):
     return create_contract(w3, CURVE_TRICRYPTO_ADDRESS, CURVE_TRICRYPTO_ABI)
@@ -35,6 +41,7 @@ async def get_amount(
 def get_amount_from_params(
     tricrypto_params, amount_in_wei: int, token_in_idx: int, token_out_idx: int
 ) -> int:
+
     A = tricrypto_params["A"]
     gamma = tricrypto_params["gamma"]
     D = tricrypto_params["D"]
@@ -53,7 +60,6 @@ def get_amount_from_params(
     dy /= tricrypto_params["precisions"][token_out_idx]
 
     xp_int = [int(_xp) for _xp in xp]
-    # fee = await curve_tricrypto_contract.functions.fee_calc(xp_int).call()
     fee = _fee(xp_int)
     dy -= fee * dy / 10**10
     return int(dy)
@@ -70,7 +76,7 @@ async def get_tricrypto_params(curve_tricrypto_contract):
         curve_tricrypto_contract.functions.balances(2).call(),
         curve_tricrypto_contract.functions.D().call(),
     )
-
+    d["address"] = curve_tricrypto_contract.address
     d["gamma"] = 21000000000000
     d["A"] = 540000
     d["precisions"] = [

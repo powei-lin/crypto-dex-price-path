@@ -41,6 +41,7 @@ async def update_pool_dict(pool_dict: dict, show_debug=True):
         total += 1
     if show_debug:
         print(count, total)
+    return True
 
 
 def path_to_string(path, pool_dict: dict, token_name_dict: dict):
