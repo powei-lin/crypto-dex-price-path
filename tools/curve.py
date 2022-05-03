@@ -123,7 +123,6 @@ def newton_y(ANN, gamma, x: list, D, out_idx) -> int:
 
     x_sorted = x
     x_sorted[out_idx] = 0
-    print(x_sorted)
     x_sorted = sorted(x_sorted, reverse=True)  # From high to low
 
     convergence_limit = int(max(max(x_sorted[0] / 10**14, D / 10**14), 100))
