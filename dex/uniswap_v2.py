@@ -1,6 +1,6 @@
 import asyncio
 from web3 import Web3
-from web3constant.abi.UniswapV2 import (
+from web3abi.UniswapV2 import (
     UNISWAP_V2_ROUTER_ABI,
     UNISWAP_V2_PAIR_ABI,
     UNISWAP_V2_FACTORY_ABI,

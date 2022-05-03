@@ -1,7 +1,7 @@
 import asyncio
 from web3 import Web3
 from web3constant.Fantom.Dex import BEETHOVEN_VAULT_ADDRESS
-from web3constant.abi.BalancerV2 import (
+from web3abi.BalancerV2 import (
     BEETHOVENX_VAULT_ABI,
     BEETHOVENX_WEIGHTED_POOL_2TOKENS_ABI,
     BEETHOVENX_WEIGHTED_POOL_ABI,

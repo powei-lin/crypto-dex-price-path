@@ -20,3 +20,12 @@ def create_tricrypto_math_contract(w3):
 def create_tricrypto_view_contract(w3):
     curve_view_address = "0x4643A6600eae4851677A1f16d5e40Ef868c71717"
     return create_contract(w3, curve_view_address, CURVE_TRICRYPTO_VIEW_ABI)
+
+
+async def get_amount(
+    curve_tricrypto_contract, amount_in_wei: int, token_in_idx: int, token_out_idx: int
+):
+    dy = await curve_tricrypto_contract.functions.get_dy(
+        token_in_idx, token_out_idx, amount_in_wei
+    ).call()
+    return dy
