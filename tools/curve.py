@@ -6,20 +6,21 @@ from web3abi.Curve import (
 )
 from .util import create_contract
 
+CURVE_TRICRYPTO_ADDRESS = "0x3a1659Ddcf2339Be3aeA159cA010979FB49155FF"
+CURVE_MATH_ADDRESS = "0x939986418baFb4E2d82A76E320767Ff02d250203"
+CURVE_VIEW_ADDRESS = "0x4643A6600eae4851677A1f16d5e40Ef868c71717"
+
 
 def creat_tricrypto_contract(w3):
-    curve_3_coin_address = "0x3a1659Ddcf2339Be3aeA159cA010979FB49155FF"
-    return create_contract(w3, curve_3_coin_address, CURVE_TRICRYPTO_ABI)
+    return create_contract(w3, CURVE_TRICRYPTO_ADDRESS, CURVE_TRICRYPTO_ABI)
 
 
 def create_tricrypto_math_contract(w3):
-    curve_math_address = "0x939986418baFb4E2d82A76E320767Ff02d250203"
-    return create_contract(w3, curve_math_address, CURVE_TRICRYPTO_MATH_ABI)
+    return create_contract(w3, CURVE_MATH_ADDRESS, CURVE_TRICRYPTO_MATH_ABI)
 
 
 def create_tricrypto_view_contract(w3):
-    curve_view_address = "0x4643A6600eae4851677A1f16d5e40Ef868c71717"
-    return create_contract(w3, curve_view_address, CURVE_TRICRYPTO_VIEW_ABI)
+    return create_contract(w3, CURVE_VIEW_ADDRESS, CURVE_TRICRYPTO_VIEW_ABI)
 
 
 async def get_amount(
@@ -185,10 +186,6 @@ def newton_y(ANN, gamma, x: list, D, out_idx) -> int:
             return int(y)
 
     raise "Did not converge"
-
-
-def K0(x_vec: list, N, D):
-    return math.prod(x_vec) * (N**N) / (D**N)
 
 
 def reduction_coefficient(x: list, fee_gamma) -> int:

@@ -8,7 +8,7 @@ class BasePool:
         self.token_balances = {t: 0 for t in _tokens}
 
     async def update_async(self):
-        self.fee += 1
+        raise NotImplementedError
 
     def slope(self, from_tk, to_tk):
         b_0, b_1 = self.token_balances[from_tk], self.token_balances[to_tk]
